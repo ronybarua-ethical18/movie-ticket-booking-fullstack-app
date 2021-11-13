@@ -20,30 +20,45 @@ module.exports = gql`
   type Movie {
     id: ID!
     title: String!
-    imgTitle: String!
     desc: String!
-    trailer: String!
-    video: String!
     year: String!
     genre: String!
-    isSeries: Boolean
+    duration: String!
+    limit: String!
+    isSeries: String!
+    img: String!
+    trailer: String!
+    likes: [Like]!
+    comments: [Comment]!
+    likeCount: Int!
+    commentCount: Int!
     createdAt: String!
   }
-
-  input MovieInput {
-    title: String!
-    img: String!
-    imgTitle: String!
-    desc: String!
-    trailer: String!
-    video: String!
-    year: String!
-    genre: String!
-    limit: Int!
-    isSeries: Boolean
+  type Comment{
+    id: ID!
+    createdAt:  String!
+    username: String!
+    body: String!
   }
 
-  type Query{
+  type Like{
+    id: ID!
+    username: String!
+    createdAt: String!
+  }
+  input MovieInput {
+    title: String!
+    desc: String!
+    year: String!
+    genre: String!
+    duration: String!
+    limit: String!
+    isSeries: String!
+    img: String!
+    trailer: String!
+  }
+
+  type Query {
     getUsers: [User]
     getMovies: [Movie]
     getMovie(movieId: ID!): Movie!
@@ -53,5 +68,8 @@ module.exports = gql`
     register(registerInput: RegisterInput): User!
     login(username: String!, password: String!): User!
     addMovie(movieInput: MovieInput): Movie!
+    createComment(movieId: ID!, body: String!): Movie!
+    deleteComment(movieId: ID!, commentId: ID!): Movie!
+    likeMovie(movieId: ID!): Movie!
   }
 `;

@@ -39,22 +39,28 @@ const validLoginInput = (username,password) =>{
     };
 }
 
-const validMovieInput = (title, desc, year, imgTitle, genre) =>{
+const validMovieInput = (title, desc, year, genre, duration, limit, isSeries) =>{
   const errors ={}
   if(title.trim() === ""){
-    errors.title = "title must not be empty"
+    errors.title = "Title must not be empty"
   }
   if(desc.trim() === ""){
-    errors.desc = "description must not be empty"
+    errors.desc = "Description must not be empty"
   }
   if(year.trim() === ""){
-    errors.year = "year must not be empty"
-  }
-  if(imgTitle.trim() === ""){
-    errors.imgTitle = "Image title must not be empty"
+    errors.year = "Year must not be empty"
   }
   if(genre.trim() === ""){
-    errors.genre = "genre must not be empty"
+    errors.genre = "Genre must not be empty"
+  }
+  if(duration.trim() === ""){
+    errors.duration = "Duration must not be empty"
+  }
+  if(limit.trim() === ""){
+    errors.limit = "Limit must not be empty"
+  }
+  if(isSeries.trim() === ""){
+    errors.isSeries = "Series field must not be empty"
   }
 
   return {

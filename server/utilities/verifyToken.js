@@ -12,13 +12,13 @@ const verifyToken = (context) => {
         return user;
       } catch (err) {
         throw new AuthenticationError("Invalid/Expired token", {
-          error: "Invalid/Expired token",
+          errors: "Invalid/Expired token",
         });
       }
     }
     throw new AuthenticationError(
       "Authentication token must be 'Bearer [token]",
-      { error: "Authentication token must be 'Bearer [token]" }
+      { errors: "Authentication token must be 'Bearer [token]" }
     );
   }
   throw new AuthenticationError("Authorization Header must be provided", {

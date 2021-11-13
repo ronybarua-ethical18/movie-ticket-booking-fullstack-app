@@ -33,15 +33,14 @@ module.exports = {
       {
         movieInput: {
           title,
-          imgTitle,
           img,
+          duration,
           desc,
-          year,
-          genre,
           trailer,
-          video,
-          isSeries,
+          year,
           limit,
+          genre,
+          isSeries,
         },
       },
       context
@@ -51,8 +50,10 @@ module.exports = {
         title,
         desc,
         year,
-        imgTitle,
-        genre
+        genre,
+        duration,
+        limit,
+        isSeries
       );
 
       if (!valid) {
@@ -62,29 +63,47 @@ module.exports = {
       const movie = await Movie.findOne({ title });
 
       if (movie) {
-        throw new UserInputError("Error", {
-          error: "The title is already exist",
+        throw new UserInputError("Errors", {
+          errors: "The title is already exist",
         });
       }
       const newMovie = new Movie({
-        id: user.id,
-        user: user.username,
         title,
-        imgTitle,
-        img,
         desc,
         year,
         genre,
-        trailer,
-        video,
+        duration,
         limit,
         isSeries,
-        createdAt: new Date().toDateString(),
+        img,
+        trailer,
+        createdAt: new Date().toISOString(),
       });
 
       const response = await newMovie.save();
 
       return response;
+    },
+    likeMovie: async (_, { movieId }, context) => {
+      const { username } = verifyToken(context);
+
+      const movie = await Movie.findById(movieId);
+
+      if (movie) {
+        if (movie.likes.find((like) => like.username === username)) {
+          //Movie is already liked so unlike it
+          movie.likes = movie.likes.filter(
+            (like) => like.username !== username
+          );
+        } else {
+          movie.likes.push({
+            username,
+            createdAt: new Date().toISOString(),
+          });
+        }
+        await movie.save();
+        return movie;
+      }else throw new UserInputError('Movie not found', {errors: 'Movie not found'}) 
     },
   },
 };
